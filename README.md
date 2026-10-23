@@ -70,8 +70,64 @@ Save as `astra-memory.cordis.yml` (adjust the command path):
 dsh web --patch "$PWD/astra-memory.cordis.yml"
 ```
 
-Other MCP clients: register the same stdio command with your client's MCP
-configuration.
+Other MCP clients: see below — the same stdio command works everywhere.
+
+## Connect any other MCP client
+
+Every client speaks the same protocol: launch the binary, talk JSON-RPC over
+stdio. Only the config file location differs.
+
+**Claude Code** (CLI):
+
+```sh
+claude mcp add astra-memory -e ASTRA_MEMORY_DIR=~/.astra-memory -- /usr/local/bin/astra-memory-mcp
+```
+
+**Cursor / Claude Desktop / Windsurf** (`mcpServers` JSON, filename differs by client):
+
+```json
+{
+  "mcpServers": {
+    "astra-memory": {
+      "command": "/usr/local/bin/astra-memory-mcp",
+      "args": [],
+      "env": { "ASTRA_MEMORY_DIR": "/Users/you/.astra-memory" }
+    }
+  }
+}
+```
+
+**Zed** (`settings.json`):
+
+```json
+{
+  "context_servers": {
+    "astra-memory": {
+      "source": "custom",
+      "command": "/usr/local/bin/astra-memory-mcp",
+      "args": [],
+      "env": { "ASTRA_MEMORY_DIR": "/Users/you/.astra-memory" }
+    }
+  }
+}
+```
+
+**Codex CLI** (`config.toml`):
+
+```toml
+[mcp_servers.astra-memory]
+command = "/usr/local/bin/astra-memory-mcp"
+env = { "ASTRA_MEMORY_DIR" = "/Users/you/.astra-memory" }
+```
+
+> **One memory, every agent.** Point all clients at the same
+> `ASTRA_MEMORY_DIR` and they share one memory store — what your coding agent
+> learns today is what your chat agent recalls tomorrow. Concurrent instances
+> are safe (SQLite-level locking); heavy parallel writes may briefly contend.
+
+What **won't** work: plain chat UIs without MCP / tool-calling support (the
+model itself is irrelevant — a DeepSeek-chat web page can't call local tools;
+DeepSeek **Harness** can).
 
 ## Configuration
 
