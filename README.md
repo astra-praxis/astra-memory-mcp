@@ -29,6 +29,24 @@ Download the archive for your platform from
 [Releases](https://github.com/astra-praxis/astra-memory-mcp/releases), unpack it,
 and put `astra-memory-mcp` on your `PATH` (or note the absolute path).
 
+Programmatic installs (scripts, agent tooling) can read
+[`latest.json`](latest.json) for the current version, per-platform asset names
+and sha256 checksums — the same shape `astra-bot` uses for its host binary.
+
+```json
+{
+  "version": "0.1.2",
+  "tag": "mcp-v0.1.2",
+  "files": {
+    "aarch64-apple-darwin": {
+      "asset": "astra-memory-mcp_0.1.2_aarch64-apple-darwin.tar.gz",
+      "sha256": "...",
+      "url": "https://github.com/astra-praxis/astra-memory-mcp/releases/download/mcp-v0.1.2/astra-memory-mcp_0.1.2_aarch64-apple-darwin.tar.gz"
+    }
+  }
+}
+```
+
 | File | Platform |
 |---|---|
 | `astra-memory-mcp_<ver>_aarch64-apple-darwin.tar.gz` | macOS (Apple Silicon) |
@@ -155,6 +173,6 @@ DeepSeek **Harness** can).
 ## License
 
 Proprietary — see [EULA.md](EULA.md). The memory database is yours; the
-software is licensed, not sold. Data escape hatch: the storage format is
-documented in [docs/protocol.md](docs/protocol.md) so your memory is never
-hostage.
+software is licensed, not sold. Data escape hatch: the storage layout and key
+format are documented in [docs/security.md](docs/security.md) so your memory
+is never hostage.
